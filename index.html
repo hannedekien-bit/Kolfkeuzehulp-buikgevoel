@@ -423,6 +423,13 @@ document.getElementById('pwa-manifest').href = URL.createObjectURL(blob);
     font-weight: 500;
   }
 
+  .pump-price {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--sage);
+    margin-bottom: 10px;
+  }
+
   .pump-available {
     display: inline-flex;
     align-items: center;
@@ -534,6 +541,18 @@ document.getElementById('pwa-manifest').href = URL.createObjectURL(blob);
 <script>
 const QUESTIONS = [
   {
+    id: 'intent',
+    label: 'Huren of kopen',
+    text: 'Wil je een kolf huren of kopen?',
+    hint: 'Dit bepaalt welke kolven we voor jou selecteren.',
+    multi: false,
+    options: [
+      { value: 'buy',  icon: '🛒', label: 'Kopen',  sub: 'Ik wil een eigen kolf aanschaffen' },
+      { value: 'rent', icon: '🔄', label: 'Huren',  sub: 'Ik wil een kolf tijdelijk lenen' },
+      { value: 'both', icon: '🤔', label: 'Nog niet zeker', sub: 'Toon mij alle opties' },
+    ]
+  },
+  {
     id: 'lifestyle',
     label: 'Jouw situatie',
     text: 'Hoe zie jij het kolven voornamelijk inpassen?',
@@ -586,13 +605,14 @@ const QUESTIONS = [
     id: 'budget',
     label: 'Budget',
     text: 'Wat is jouw budget voor een kolf?',
-    hint: 'Wij raden altijd aan om te beginnen met een testconsult.',
+    hint: 'Onze koopkolven variëren van €159,99 tot €249. Kies het budget dat voor jou past.',
+    skipIf: (answers) => answers['intent'] === 'rent',
     multi: false,
     options: [
-      { value: 'low', icon: '💶', label: 'Minder dan €100', sub: 'Toegankelijk en functioneel' },
-      { value: 'mid', icon: '💰', label: '€100 – €250', sub: 'Goede prijs-kwaliteitsverhouding' },
-      { value: 'high', icon: '✨', label: 'Meer dan €250', sub: 'Beste technologie en comfort' },
-      { value: 'any', icon: '🎯', label: 'Budget is geen prioriteit', sub: 'Ik wil gewoon de beste kolf' },
+      { value: 'low',  icon: '💶', label: 'Tot €170', sub: 'Lansinoh DiscreetDuo (€159,99)' },
+      { value: 'mid',  icon: '💰', label: '€170 – €210', sub: 'Freestyle Mini (€189) of M5 Smart (€209,99)' },
+      { value: 'high', icon: '✨', label: '€210 – €249', sub: 'Motion InBra (€219) of Freestyle Handsfree (€249)' },
+      { value: 'any',  icon: '🎯', label: 'Budget is geen prioriteit', sub: 'Ik wil gewoon de beste kolf' },
     ]
   },
   {
@@ -618,6 +638,8 @@ const PUMPS = [
     name: 'Freestyle Handsfree',
     brand: 'Medela',
     tags: ['Handsfree', 'Dubbele kolf', 'App', 'Draadloos'],
+    price: '€ 249,00',
+    rentOnly: false,
     available: true,
     scores: {
       lifestyle: { work: 10, mixed: 10, home: 7, unsure: 8 },
@@ -630,10 +652,30 @@ const PUMPS = [
     pros: '<strong>Volledig handsfree</strong>, past in gewone bh, dubbele elektrische kolf met My Medela app. Ideaal als je veel kolft en dit wil combineren met andere activiteiten.',
   },
   {
+    id: 'medela_freestyle_mini',
+    name: 'Freestyle Mini',
+    brand: 'Medela',
+    tags: ['Handsfree', 'Dubbele kolf', 'Compact', 'Draadloos', 'Lichtgewicht'],
+    price: '€ 189,00',
+    rentOnly: false,
+    available: true,
+    scores: {
+      lifestyle: { work: 10, mixed: 10, home: 7, unsure: 8 },
+      discretion: { very: 7, somewhat: 9, not: 6 },
+      handsfree: { essential: 9, nice: 9, no: 4 },
+      frequency: { often: 8, occasional: 9, unsure: 8 },
+      budget: { low: 9, mid: 6, high: 5, any: 8 },
+      priorities: { comfort: 8, speed: 8, silent: 7, easy: 9, connected: 4, portable: 10 },
+    },
+    pros: '<strong>Compacte handsfree dubbele kolf</strong> – 3 cm kleiner en 60 g lichter dan de Freestyle Handsfree, met dezelfde zuigkracht. Geen app, eenvoudige bediening. Past in gewone voedingsbh. Perfecte keuze voor mama\'s die portabiliteit en eenvoud belangrijk vinden.',
+  },
+  {
     id: 'medela_inbra',
     name: 'Motion InBra',
     brand: 'Medela',
     tags: ['In-bh', 'Ultra discreet', 'Draadloos', 'Handsfree', '2-Phase Tech'],
+    price: '€ 219,00',
+    rentOnly: false,
     available: true,
     scores: {
       lifestyle: { work: 10, mixed: 10, home: 7, unsure: 8 },
@@ -647,67 +689,75 @@ const PUMPS = [
   },
   {
     id: 'lansinoh_discreet',
-    name: 'Discreet Double',
+    name: 'DiscreetDuo',
     brand: 'Lansinoh',
-    tags: ['Discreet', 'Dubbele kolf', 'App', 'Lichtgewicht'],
+    tags: ['Discreet', 'Dubbele kolf', 'Lichtgewicht', 'In-bh'],
+    price: '€ 159,99',
+    rentOnly: false,
     available: true,
     scores: {
       lifestyle: { work: 9, mixed: 9, home: 7, unsure: 8 },
       discretion: { very: 9, somewhat: 9, not: 6 },
       handsfree: { essential: 9, nice: 8, no: 4 },
       frequency: { often: 9, occasional: 7, unsure: 8 },
-      budget: { low: 0, mid: 8, high: 7, any: 8 },
-      priorities: { comfort: 8, speed: 8, silent: 8, easy: 8, connected: 9, portable: 9 },
+      budget: { low: 10, mid: 6, high: 5, any: 8 },
+      priorities: { comfort: 8, speed: 8, silent: 8, easy: 8, connected: 4, portable: 9 },
     },
-    pros: '<strong>Goede prijs-kwaliteitsverhouding</strong> voor een draadloze in-bh-kolf. App-koppeling, stil en comfortabel. Populaire keuze voor actieve mama\'s.',
+    pros: '<strong>Goede prijs-kwaliteitsverhouding</strong> voor een draadloze in-bh-kolf. Slechts 4 onderdelen – makkelijk te reinigen. Stil (&lt;45dB), licht en discreet. Populaire keuze voor actieve mama\'s.',
   },
   {
     id: 'momcozy_m5',
     name: 'M5 Smart',
     brand: 'Momcozy',
     tags: ['Handsfree', 'In-bh', 'App', 'Betaalbaar', 'Draadloos'],
+    price: '€ 209,99',
+    rentOnly: false,
     available: true,
     scores: {
       lifestyle: { work: 9, mixed: 9, home: 7, unsure: 8 },
       discretion: { very: 8, somewhat: 8, not: 6 },
       handsfree: { essential: 9, nice: 8, no: 4 },
       frequency: { often: 8, occasional: 9, unsure: 8 },
-      budget: { low: 9, mid: 10, high: 6, any: 7 },
+      budget: { low: 0, mid: 9, high: 4, any: 7 },
       priorities: { comfort: 7, speed: 7, silent: 7, easy: 9, connected: 8, portable: 9 },
     },
-    pros: '<strong>Betaalbare handsfree kolf mét app-koppeling</strong> (Momcozy-app). Kolfsessies bijhouden, instellingen aanpassen via smartphone. Eenvoudig in gebruik, past in de bh – ideale instapkolf voor de technologisch ingestelde mama.',
+    pros: '<strong>Betaalbare handsfree kolf mét app-koppeling</strong> (Momcozy-app). Kolfsessies bijhouden, instellingen aanpassen via smartphone. 3 modi, 9 niveaus, lichtgewicht 232g – ideale instapkolf voor de technologisch ingestelde mama.',
   },
   {
     id: 'ardo_bellis',
     name: 'Bellis',
     brand: 'Ardo',
-    tags: ['Traditioneel', 'Krachtig', 'Stil', 'Dubbel'],
+    tags: ['Semi-professioneel', 'Power Pumping', 'App', 'Dubbel', 'Huurkolf'],
+    price: '€ 2,00 / dag',
+    rentOnly: true,
     available: true,
     scores: {
       lifestyle: { home: 10, work: 6, mixed: 6, unsure: 8 },
       discretion: { very: 4, somewhat: 6, not: 10 },
       handsfree: { essential: 4, nice: 6, no: 10 },
       frequency: { often: 10, occasional: 7, unsure: 8 },
-      budget: { low: 0, mid: 6, high: 9, any: 9 },
+      budget: { low: 10, mid: 9, high: 7, any: 9 },
       priorities: { comfort: 10, speed: 9, silent: 9, easy: 7, connected: 4, portable: 4 },
     },
-    pros: '<strong>Krachtige klinische kolf</strong> voor intensief gebruik. Zachte zuigkracht, uitstekend voor mama\'s die de melkproductie willen opbouwen of ondersteunen. Minder draagbaar, maar heel effectief thuis.',
+    pros: '<strong>Semi-professionele huurkolf</strong> voor intensief gebruik. 64 instellingen (8 vacuüm × 8 cycli), automatisch Power Pumping programma. Ideaal voor het opbouwen van melkproductie. + €100 terugbetaalbare waarborg.',
   },
   {
-    id: 'youha_gen1',
-    name: 'Dubbele Borstkolf Gen1',
-    brand: 'Youha',
-    tags: ['Handsfree', 'Stille motor', 'Visueel display', 'Draadloos'],
+    id: 'medela_symphony',
+    name: 'Symphony + Handsfree Cups',
+    brand: 'Medela',
+    tags: ['Ziekenhuiskwaliteit', 'Professioneel', 'Handsfree', 'Dubbel', 'Huurkolf'],
+    price: '€ 4,00 / dag',
+    rentOnly: true,
     available: true,
     scores: {
-      lifestyle: { work: 8, mixed: 9, home: 8, unsure: 8 },
-      discretion: { very: 7, somewhat: 8, not: 7 },
-      handsfree: { essential: 9, nice: 8, no: 4 },
-      frequency: { often: 8, occasional: 8, unsure: 8 },
-      budget: { low: 0, mid: 9, high: 7, any: 8 },
-      priorities: { comfort: 9, speed: 8, silent: 8, easy: 9, connected: 6, portable: 8 },
+      lifestyle: { home: 10, work: 5, mixed: 5, unsure: 8 },
+      discretion: { very: 5, somewhat: 6, not: 10 },
+      handsfree: { essential: 8, nice: 8, no: 6 },
+      frequency: { often: 10, occasional: 6, unsure: 8 },
+      budget: { low: 9, mid: 8, high: 7, any: 10 },
+      priorities: { comfort: 10, speed: 10, silent: 8, easy: 7, connected: 3, portable: 4 },
     },
-    pros: '<strong>Stille handsfree kolf</strong> met helder display en intuïtieve bediening. Goede middenweg: draagbaar, comfortabel en gebruiksvriendelijk.',
+    pros: '<strong>Professionele ziekenhuiskolf met Handsfree Collection Cups</strong> – sterkste kolf in ons aanbod (330 mbar). Uniek INITIATE-programma voor melkproductie in de eerste dagen. Handsfree dankzij de cups. Ideaal bij vroeggeboorte, lage productie of medische indicatie. + €100 terugbetaalbare waarborg.',
   },
 ];
 
@@ -795,7 +845,12 @@ function goNext() {
 }
 
 function scoreAllPumps() {
-  return PUMPS.map(pump => {
+  const intent = answers['intent'];
+  return PUMPS.filter(pump => {
+    if (intent === 'buy'  && pump.rentOnly) return false;
+    if (intent === 'rent' && !pump.rentOnly) return false;
+    return true;
+  }).map(pump => {
     let total = 0;
     let max = 0;
 
@@ -820,7 +875,7 @@ function showResults() {
   buildProgressBar();
   document.querySelectorAll('.progress-step').forEach(s => s.classList.add('done'));
 
-  const ranked = scoreAllPumps();
+  const ranked = scoreAllPumps().filter(p => p.score >= 0);
   const top = ranked.slice(0, 3);
 
   const area = document.getElementById('quizArea');
@@ -832,7 +887,7 @@ function showResults() {
     ${top.map((pump, i) => renderPumpCard(pump, i)).join('')}
     <div class="consult-cta">
       <h3>Wil je het zeker weten?</h3>
-      <p>Tijdens een kolfconsult bij onze vroedvrouwen kan je deze kolven <strong>uitproberen</strong> en een persoonlijk advies op maat krijgen.</p>
+      <p>Tijdens een kolfconsult bij onze vroedvrouwen kan je deze kolven <strong>uitproberen</strong> en een persoonlijk advies op maat krijgen.</p><p style="margin-top:8px;font-size:0.78rem;color:#F2D9CC;">🎁 <strong>€10 korting</strong> op het kolfconsult (€50) bij aankoop van een kolf via Buikgevoel.</p>
       <button class="btn-consult">Plan een kolfconsult 📅</button>
     </div>
     <div class="restart-row">
@@ -855,6 +910,7 @@ function renderPumpCard(pump, rank) {
     <div class="pump-card ${rankClass}">
       <div class="pump-brand">${pump.brand}</div>
       <div class="pump-name">${pump.name}</div>
+      ${pump.price ? `<div class="pump-price">${pump.price}</div>` : ''}
       <div class="score-bar-wrap">
         <div class="score-bar">
           <div class="score-fill" id="fill_${pump.id}" style="width:0%"></div>
