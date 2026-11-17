@@ -605,13 +605,13 @@ const QUESTIONS = [
     id: 'budget',
     label: 'Budget',
     text: 'Wat is jouw budget voor een kolf?',
-    hint: 'Onze koopkolven variëren van €159,99 tot €249. Kies het budget dat voor jou past.',
+    hint: 'Onze koopkolven variëren van €159,99 tot €255. Kies het budget dat voor jou past.',
     skipIf: (answers) => answers['intent'] === 'rent',
     multi: false,
     options: [
-      { value: 'low',  icon: '💶', label: 'Tot €170', sub: 'Lansinoh DiscreetDuo (€159,99)' },
-      { value: 'mid',  icon: '💰', label: '€170 – €210', sub: 'Freestyle Mini (€189) of M5 Smart (€209,99)' },
-      { value: 'high', icon: '✨', label: '€210 – €249', sub: 'Motion InBra (€219) of Freestyle Handsfree (€249)' },
+      { value: 'low',  icon: '💶', label: 'Tot €190', sub: 'DiscreetDuo (€159,99) of Freestyle Mini (€189)' },
+      { value: 'mid',  icon: '💰', label: '€190 – €220', sub: 'eufy S1 (€199,99), M5 Smart (€209,99) of Motion InBra (€219)' },
+      { value: 'high', icon: '✨', label: '€220 – €255', sub: 'Freestyle Handsfree (€249) of Horigen 3D (€255)' },
       { value: 'any',  icon: '🎯', label: 'Budget is geen prioriteit', sub: 'Ik wil gewoon de beste kolf' },
     ]
   },
@@ -646,7 +646,7 @@ const PUMPS = [
       discretion: { very: 8, somewhat: 9, not: 6 },
       handsfree: { essential: 10, nice: 8, no: 4 },
       frequency: { often: 10, occasional: 7, unsure: 8 },
-      budget: { low: 0, mid: 4, high: 10, any: 10 },
+      budget: { low: 0, mid: 2, high: 10, any: 10 },
       priorities: { comfort: 8, speed: 9, silent: 7, easy: 7, connected: 10, portable: 9 },
     },
     pros: '<strong>Volledig handsfree</strong>, past in gewone bh, dubbele elektrische kolf met My Medela app. Ideaal als je veel kolft en dit wil combineren met andere activiteiten.',
@@ -664,7 +664,7 @@ const PUMPS = [
       discretion: { very: 7, somewhat: 9, not: 6 },
       handsfree: { essential: 9, nice: 9, no: 4 },
       frequency: { often: 8, occasional: 9, unsure: 8 },
-      budget: { low: 9, mid: 6, high: 5, any: 8 },
+      budget: { low: 9, mid: 6, high: 0, any: 8 },
       priorities: { comfort: 8, speed: 8, silent: 7, easy: 9, connected: 4, portable: 10 },
     },
     pros: '<strong>Compacte handsfree dubbele kolf</strong> – 3 cm kleiner en 60 g lichter dan de Freestyle Handsfree, met dezelfde zuigkracht. Geen app, eenvoudige bediening. Past in gewone voedingsbh. Perfecte keuze voor mama\'s die portabiliteit en eenvoud belangrijk vinden.',
@@ -682,7 +682,7 @@ const PUMPS = [
       discretion: { very: 10, somewhat: 8, not: 5 },
       handsfree: { essential: 10, nice: 8, no: 3 },
       frequency: { often: 9, occasional: 8, unsure: 8 },
-      budget: { low: 0, mid: 5, high: 10, any: 10 },
+      budget: { low: 0, mid: 9, high: 7, any: 10 },
       priorities: { comfort: 10, speed: 9, silent: 10, easy: 9, connected: 4, portable: 10 },
     },
     pros: '<strong>Ultradiscreet in-bh-kolf zonder app</strong> – direct klaar via intuïtief display. Bewezen 2-Phase technologie verhoogt melkopbrengst met 11,8%. 105° borstschild voorkomt compressie. Stil, licht en handsfree – maximale vrijheid en comfort.',
@@ -700,7 +700,7 @@ const PUMPS = [
       discretion: { very: 9, somewhat: 9, not: 6 },
       handsfree: { essential: 9, nice: 8, no: 4 },
       frequency: { often: 9, occasional: 7, unsure: 8 },
-      budget: { low: 10, mid: 6, high: 5, any: 8 },
+      budget: { low: 10, mid: 4, high: 0, any: 8 },
       priorities: { comfort: 8, speed: 8, silent: 8, easy: 8, connected: 4, portable: 9 },
     },
     pros: '<strong>Goede prijs-kwaliteitsverhouding</strong> voor een draadloze in-bh-kolf. Slechts 4 onderdelen – makkelijk te reinigen. Stil (&lt;45dB), licht en discreet. Populaire keuze voor actieve mama\'s.',
@@ -718,10 +718,46 @@ const PUMPS = [
       discretion: { very: 8, somewhat: 8, not: 6 },
       handsfree: { essential: 9, nice: 8, no: 4 },
       frequency: { often: 8, occasional: 9, unsure: 8 },
-      budget: { low: 0, mid: 9, high: 4, any: 7 },
+      budget: { low: 0, mid: 10, high: 4, any: 7 },
       priorities: { comfort: 7, speed: 7, silent: 7, easy: 9, connected: 8, portable: 9 },
     },
     pros: '<strong>Betaalbare handsfree kolf mét app-koppeling</strong> (Momcozy-app). Kolfsessies bijhouden, instellingen aanpassen via smartphone. 3 modi, 9 niveaus, lichtgewicht 232g – ideale instapkolf voor de technologisch ingestelde mama.',
+  },
+  {
+    id: 'eufy_s1',
+    name: 'S1',
+    brand: 'eufy',
+    tags: ['In-bh', 'Dubbel', 'Verwarming', 'App', 'Draadloos'],
+    price: '€ 199,99',
+    rentOnly: false,
+    available: true,
+    scores: {
+      lifestyle: { work: 9, mixed: 9, home: 8, unsure: 8 },
+      discretion: { very: 9, somewhat: 9, not: 6 },
+      handsfree: { essential: 9, nice: 8, no: 4 },
+      frequency: { often: 8, occasional: 8, unsure: 8 },
+      budget: { low: 3, mid: 10, high: 3, any: 8 },
+      priorities: { comfort: 10, speed: 8, silent: 9, easy: 6, connected: 9, portable: 9 },
+    },
+    pros: '<strong>Draagbare in-bh-kolf met ingebouwde verwarming</strong> (7 warmtestanden, 35–41 °C) voor extra comfort. Tot 290 mmHg zuigkracht, stil (&lt;46 dB) en bedienbaar via de eufy Baby-app. Standaard 24 mm schild met inserts van 17, 19 en 21 mm.',
+  },
+  {
+    id: 'horigen_3d',
+    name: '3D Compressie',
+    brand: 'Horigen',
+    tags: ['In-bh', 'Dubbel', '3D-compressie', 'App', 'Draadloos'],
+    price: '€ 255,00',
+    rentOnly: false,
+    available: true,
+    scores: {
+      lifestyle: { work: 9, mixed: 9, home: 8, unsure: 8 },
+      discretion: { very: 8, somewhat: 8, not: 6 },
+      handsfree: { essential: 9, nice: 8, no: 4 },
+      frequency: { often: 9, occasional: 8, unsure: 8 },
+      budget: { low: 0, mid: 1, high: 10, any: 10 },
+      priorities: { comfort: 9, speed: 8, silent: 7, easy: 7, connected: 8, portable: 9 },
+    },
+    pros: '<strong>Handsfree in-bh-kolf met 3D-compressieschild</strong>: zacht vacuüm gecombineerd met ritmische druk en massage op de tepelhof. 3 programma\'s, 9 vacuümstanden, bedienbaar via de motor of de Horigen-app. Standaard 24 mm schild met 4 verkleiners (21, 19, 17 en 15 mm).',
   },
   {
     id: 'ardo_bellis',
@@ -830,14 +866,23 @@ function selectOption(id, value, multi) {
 }
 
 function goBack() {
-  if (currentQuestion > 0) { currentQuestion--; renderQuestion(); }
+  let prev = currentQuestion - 1;
+  while (prev >= 0 && isSkipped(prev)) prev--;
+  if (prev >= 0) { currentQuestion = prev; renderQuestion(); }
+}
+
+function isSkipped(i) {
+  const q = QUESTIONS[i];
+  return typeof q.skipIf === 'function' && q.skipIf(answers);
 }
 
 function goNext() {
   const q = QUESTIONS[currentQuestion];
   if (!hasAnswer(q.id, q.multi)) return;
-  if (currentQuestion < QUESTIONS.length - 1) {
-    currentQuestion++;
+  let next = currentQuestion + 1;
+  while (next < QUESTIONS.length && isSkipped(next)) next++;
+  if (next < QUESTIONS.length) {
+    currentQuestion = next;
     renderQuestion();
   } else {
     showResults();
